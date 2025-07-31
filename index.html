@@ -113,8 +113,8 @@
   <h1>Tempo desde momentos especiais</h1>
   <div class="box" id="beijo"></div>
   <div class="box" id="namoro"></div>
+  <div class="box" id="alianca"></div>
   <button id="iniciarBtn">Novo momento especial 💍</button>
-  <div class="box" id="alianca" style="display:none;"></div>
   <div id="mensagemEspecial">Esse é mais um capítulo da nossa história 💖</div>
   
   <script>
@@ -188,7 +188,7 @@
       const tempoEntregaAlianca = calcTempo(entregaAliancaData);
       document.getElementById("beijo").innerHTML = `<strong>Primeiro beijo:</strong> ${formatar(tempoBeijo)}<div class="total">${totalFormatado(tempoBeijo)}</div>`;
       document.getElementById("namoro").innerHTML = `<strong>Pedido de namoro:</strong> ${formatar(tempoNamoro)}<div class="total">${totalFormatado(tempoNamoro)}</div>`;
-      document.getElementById("entregaAlianca").innerHTML = `<strong>Entrega da aliança:</strong> ${formatar(tempoEntregaAlianca)}<div class="total">${totalFormatado(tempoEntregaAlianca)}</div>`;
+      document.getElementById("alianca").innerHTML = `<strong>Entrega da aliança:</strong> ${formatar(tempoEntregaAlianca)}<div class="total">${totalFormatado(tempoEntregaAlianca)}</div>`;
 
       if (aliancaData) {
         const tempoAlianca = calcTempo(aliancaData);
