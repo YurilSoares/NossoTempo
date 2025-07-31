@@ -120,6 +120,7 @@
   <script>
     const beijoData = new Date("2025-03-23T00:00:00");
     const namoroData = new Date("2025-06-23T00:00:00");
+    const entregaAliancaData = new Date("2025-07-28T16:01:00");
     let aliancaData = null;
 
     function calcTempo(data) {
@@ -184,8 +185,10 @@
     function atualizar() {
       const tempoBeijo = calcTempo(beijoData);
       const tempoNamoro = calcTempo(namoroData);
+      const tempoEntregaAlianca = calcTempo(entregaAliancaData);
       document.getElementById("beijo").innerHTML = `<strong>Primeiro beijo:</strong> ${formatar(tempoBeijo)}<div class="total">${totalFormatado(tempoBeijo)}</div>`;
       document.getElementById("namoro").innerHTML = `<strong>Pedido de namoro:</strong> ${formatar(tempoNamoro)}<div class="total">${totalFormatado(tempoNamoro)}</div>`;
+      document.getElementById("entregaAlianca").innerHTML = `<strong>Entrega da aliança:</strong> ${formatar(tempoEntregaAlianca)}<div class="total">${totalFormatado(tempoEntregaAlianca)}</div>`;
 
       if (aliancaData) {
         const tempoAlianca = calcTempo(aliancaData);
