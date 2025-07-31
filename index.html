@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tempo desde momentos especiais</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 30px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.4em;
+    }
+
+    .box {
+      background-color: white;
+      padding: 20px 30px;
+      margin: 10px 0;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      transition: all 0.5s ease;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .box:nth-child(2) { animation-delay: 0.5s; }
+    .box:nth-child(3) { animation-delay: 1s; }
+    .box:nth-child(4) { animation-delay: 1.5s; }
+
+    .total {
+      margin-top: 8px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    #iniciarBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    #qr-code {
+      margin-top: 30px;
+      animation: fadeIn 2s ease forwards;
+      width: 180px;
+      height: 180px;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+    }
+
+    .heart {
+      position: absolute;
+      color: pink;
+      font-size: 20px;
+      animation: floatUp 6s infinite ease-in;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    #mensagemEspecial {
+      margin-top: 20px;
+      font-size: 1.3em;
+      color: #d63384;
+      animation: fadeInMensagem 2s ease forwards;
+      display: none;
+      text-align: center;
+    }
+
+    @keyframes fadeInMensagem {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Tempo desde momentos especiais</h1>
+  <div class="box" id="beijo"></div>
+  <div class="box" id="namoro"></div>
+  <button id="iniciarBtn">Novo momento especial 💍</button>
+  <div class="box" id="alianca" style="display:none;"></div>
+  <div id="mensagemEspecial">Esse é mais um capítulo da nossa história 💖</div>
+  
+  <script>
+    const beijoData = new Date("2025-03-23T00:00:00");
+    const namoroData = new Date("2025-06-23T00:00:00");
+    let aliancaData = null;
+
+    function calcTempo(data) {
+      const agora = new Date();
+      let anos = agora.getFullYear() - data.getFullYear();
+      let meses = agora.getMonth() - data.getMonth();
+      let dias = agora.getDate() - data.getDate();
+      let horas = agora.getHours() - data.getHours();
+      let minutos = agora.getMinutes() - data.getMinutes();
+      let segundos = agora.getSeconds() - data.getSeconds();
+      let milissegundos = agora.getMilliseconds() - data.getMilliseconds();
+
+      if (milissegundos < 0) {
+        milissegundos += 1000;
+        segundos--;
+      }
+      if (segundos < 0) {
+        segundos += 60;
+        minutos--;
+      }
+      if (minutos < 0) {
+        minutos += 60;
+        horas--;
+      }
+      if (horas < 0) {
+        horas += 24;
+        dias--;
+      }
+      if (dias < 0) {
+        const prevMonth = new Date(agora.getFullYear(), agora.getMonth(), 0);
+        dias += prevMonth.getDate();
+        meses--;
+      }
+      if (meses < 0) {
+        meses += 12;
+        anos--;
+      }
+
+      const diff = agora - data;
+      const totalDias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const totalHoras = Math.floor(diff / (1000 * 60 * 60));
+      const totalSegundos = Math.floor(diff / 1000);
+
+      return {
+        anos, meses, dias, horas, minutos, segundos, milissegundos,
+        total: {
+          dias: totalDias,
+          horas: totalHoras,
+          segundos: totalSegundos
+        }
+      };
+    }
+
+    function formatar(tempo) {
+      return `${tempo.anos} anos, ${tempo.meses} meses, ${tempo.dias} dias, ${tempo.horas}h ${tempo.minutos}min ${tempo.segundos}s ${tempo.milissegundos}ms`;
+    }
+
+    function totalFormatado(tempo) {
+      return `Total: ${tempo.total.dias} dias | ${tempo.total.horas} horas | ${tempo.total.segundos} segundos`;
+    }
+
+    function atualizar() {
+      const tempoBeijo = calcTempo(beijoData);
+      const tempoNamoro = calcTempo(namoroData);
+      document.getElementById("beijo").innerHTML = `<strong>Primeiro beijo:</strong> ${formatar(tempoBeijo)}<div class="total">${totalFormatado(tempoBeijo)}</div>`;
+      document.getElementById("namoro").innerHTML = `<strong>Pedido de namoro:</strong> ${formatar(tempoNamoro)}<div class="total">${totalFormatado(tempoNamoro)}</div>`;
+
+      if (aliancaData) {
+        const tempoAlianca = calcTempo(aliancaData);
+        const aliancaDiv = document.getElementById("alianca");
+        aliancaDiv.innerHTML = `<strong>Momento da aliança:</strong> ${formatar(tempoAlianca)}<div class="total">${totalFormatado(tempoAlianca)}</div>`;
+      }
+    }
+
+    setInterval(atualizar, 100);
+    atualizar();
+
+    document.getElementById("iniciarBtn").addEventListener("click", () => {
+      aliancaData = new Date();
+      document.getElementById("alianca").style.display = "block";
+      document.getElementById("iniciarBtn").style.display = "none";
+      document.getElementById("mensagemEspecial").style.display = "block";
+    });
+
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.top = "100vh";
+      heart.style.fontSize = `${Math.random() * 10 + 10}px`;
+      heart.style.animationDuration = `${Math.random() * 5 + 3}s`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }, 800);
+  </script>
+
+</body>
+</html>
